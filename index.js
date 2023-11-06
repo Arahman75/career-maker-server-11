@@ -29,12 +29,12 @@ async function run() {
 
         //post service
 
-        // app.post('/services', async (req, res) => {
-        //     const newProduct = req.body;
-        //     console.log(newProduct);
-        //     const result = await serviceCollection.insertOne(newProduct);
-        //     res.send(result)
-        // })
+        app.post('/services', async (req, res) => {
+            const newProduct = req.body;
+            console.log(newProduct);
+            const result = await serviceCollection.insertOne(newProduct);
+            res.send(result)
+        })
 
         // get all services
         app.get('/services', async (req, res) => {
