@@ -32,15 +32,17 @@ const client = new MongoClient(uri, {
     }
 });
 
+// vercel link: https://b8a11-career-maker-server.vercel.app
+
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
         // await client.connect();
 
         const serviceCollection = client.db('petsDB').collection('services');
+        const bookingCollection = client.db('petsDB').collection('booking');
 
         //post service
-
         app.post('/services', async (req, res) => {
             const newProduct = req.body;
             console.log(newProduct);
@@ -64,6 +66,15 @@ async function run() {
             const result = await serviceCollection.findOne(query);
             res.send(result)
         })
+
+        // post booking
+        app.post('/booking', async (req, res) => {
+            const newProduct = req.body;
+            console.log(newProduct);
+            const result = await bookingCollection.insertOne(newProduct);
+            res.send(result)
+        })
+
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
