@@ -5,8 +5,20 @@ require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 
-// middleware 
-app.use(cors());
+
+// middleware
+const corsConfig = {
+    origin: [
+        'http://localhost:5173',
+        'https://pet-sitting-and-walking.web.app',
+        'https://pet-sitting-and-walking.firebaseapp.com'
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+}
+app.use(cors(corsConfig))
+app.options("", cors(corsConfig));
+// app.use(cors());
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ik9fyhp.mongodb.net/?retryWrites=true&w=majority`;
@@ -44,13 +56,6 @@ async function run() {
         })
 
 
-        // app.delete('/products/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const query = { _id: new ObjectId(id) };
-        //     const result = await productCollection.deleteOne(query);
-        //     res.send(result)
-        // })
-
         // get single service
         app.get('/services/:id', async (req, res) => {
             const id = req.params.id;
@@ -60,27 +65,8 @@ async function run() {
             res.send(result)
         })
 
-        // app.put('/products/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const filter = { _id: new ObjectId(id) };
-        //     const options = { upsert: true };
-        //     const updateProduct = req.body;
-        //     const product = {
-        //         $set: {
-        //             name: updateProduct.name,
-        //             brandName: updateProduct.brandName,
-        //             price: updateProduct.price,
-        //             description: updateProduct.description,
-        //             rating: updateProduct.rating, image: updateProduct.image
-        //         }
-        //     }
-        //     const result = await productCollection.updateOne(filter, product, options);
-        //     res.send(result)
-        // })
-
-
         // Send a ping to confirm a successful connection
-        // await client.db("admin").command({ ping: 1 });
+        await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
