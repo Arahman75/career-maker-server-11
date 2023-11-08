@@ -32,8 +32,6 @@ const client = new MongoClient(uri, {
     }
 });
 
-// vercel link: https://b8a11-career-maker-server.vercel.app
-
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
@@ -61,7 +59,7 @@ async function run() {
         // get single service
         app.get('/services/:id', async (req, res) => {
             const id = req.params.id;
-            console.log('update id', id);
+            // console.log('update id', id);
             const query = { _id: new ObjectId(id) };
             const result = await serviceCollection.findOne(query);
             res.send(result)
@@ -70,6 +68,7 @@ async function run() {
         // handle delete
         app.delete('/services/:id', async (req, res) => {
             const id = req.params.id;
+            console.log('deleted id', id);
             const query = { _id: new ObjectId(id) };
             const result = await serviceCollection.deleteOne(query);
             res.send(result);
@@ -102,24 +101,6 @@ async function run() {
             const result = await bookingCollection.findOne(query);
             res.send(result)
         })
-
-        // app.patch('/bookings/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const filter = { _id: new ObjectId(id) }
-        //     const updateBooking = req.body;
-        //     console.log(updateBooking);
-        //     const updateDoc = {
-        //         $set: {
-        //             status: updateBooking.status
-        //         },
-        //     };
-        //     const result = await bookingCollection.updateOne(filter, updateDoc);
-        //     res.send(result)
-        // })
-
-
-
-
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
